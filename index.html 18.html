@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JOURA — Journey of Reflection and Achievement</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --green:#648b70;
+  --green-dark:#426b50;
+  --green-light:#e5f0e5;
+  --cream:#fffaf0;
+  --yellow:#f5ce70;
+  --orange:#e99c69;
+  --blue:#a9d3e8;
+  --ink:#35483b;
+  --muted:#849187;
+  --pink:#f2c8c3;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:#e9eee8;color:var(--ink);
+  font-family:'Nunito',sans-serif;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{
+  max-width:430px;min-height:100vh;margin:auto;
+  background:var(--cream);position:relative;overflow:hidden;
+  box-shadow:0 0 35px #344b3518;
+}
+.screen{display:none;min-height:100vh;padding-bottom:85px}
+.screen.active{display:block}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:19px 20px 12px;
+}
+.logo{font-size:23px;font-weight:900;letter-spacing:1px;color:var(--green-dark)}
+.logo small{display:block;font-size:9px;letter-spacing:2px;color:#89978b}
+.avatar{
+  width:39px;height:39px;border-radius:50%;background:#f5dfb5;
+  display:grid;place-items:center;font-size:21px;border:2px solid white;
+}
+.heading{padding:12px 21px 17px}
+.heading h1{font-size:24px;line-height:1.2;margin:0 0 7px;font-weight:900}
+.heading p{font-size:13px;color:var(--muted);margin:0;line-height:1.5}
+.card{
+  background:white;border:1px solid #edf0e8;border-radius:19px;
+  padding:16px;box-shadow:0 5px 15px #344b3509;
+}
+.primary{
+  border:0;background:var(--green);color:white;font-weight:800;
+  padding:12px 17px;border-radius:13px;
+}
+.secondary{
+  border:1px solid #dce6dc;background:white;color:var(--green-dark);
+  font-weight:800;padding:10px 14px;border-radius:12px;
+}
+.back{
+  border:0;background:#edf3eb;color:var(--green-dark);
+  border-radius:11px;width:37px;height:37px;font-size:19px;
+}
+.section-title{font-size:15px;font-weight:900;margin:0 0 12px}
+.muted{color:var(--muted);font-size:12px}
+.tag{
+  display:inline-block;padding:5px 10px;border-radius:20px;
+  background:var(--green-light);color:var(--green-dark);
+  font-size:10px;font-weight:800;
+}
+
+/* SUBJECT SELECTION */
+.welcome-art{
+  margin:8px 18px 20px;border-radius:25px;padding:22px 19px;
+  background:linear-gradient(140deg,#dcefe0,#f8e9c9);
+  position:relative;overflow:hidden;min-height:165px;
+}
+.welcome-art h2{font-size:23px;line-height:1.2;margin:0 0 8px;max-width:230px}
+.welcome-art p{font-size:12px;max-width:220px;line-height:1.5;color:#617b68}
+.welcome-emoji{position:absolute;right:8px;bottom:5px;font-size:83px}
+.subject-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  padding:0 18px;
+}
+.subject{
+  border:1px solid #e8eee5;border-radius:18px;background:white;
+  padding:16px 13px;text-align:left;min-height:112px;
+  box-shadow:0 4px 12px #344b3508;transition:.2s;
+}
+.subject:active{transform:scale(.97)}
+.subject .emoji{font-size:29px;display:block;margin-bottom:9px}
+.subject strong{font-size:13px;display:block}
+.subject small{font-size:10px;color:var(--muted)}
+.subject.wide{grid-column:span 2;min-height:85px}
+.subject.wide .emoji{float:left;margin:0 13px 0 0}
+.bottom-note{margin:20px;text-align:center;font-size:11px;color:var(--muted)}
+
+/* LEARNING MAP */
+.map-head{
+  margin:0 16px;padding:15px 16px;border-radius:19px;
+  background:#eaf2e7;display:flex;align-items:center;justify-content:space-between;
+}
+.map-head strong{font-size:15px}
+.map-head small{display:block;font-size:11px;color:#728474;margin-top:3px}
+.progress-track{height:7px;background:#d4e2d3;border-radius:20px;margin-top:10px;overflow:hidden}
+.progress-fill{height:100%;width:40%;background:var(--green);border-radius:20px}
+.map-world{
+  position:relative;margin:14px 10px 0;min-height:1110px;
+  overflow:hidden;border-radius:25px;
+  background:linear-gradient(#d8edf3 0%,#e9f3dc 27%,#dcebd1 70%,#cce3c5 100%);
+}
+.cloud{position:absolute;font-size:38px;opacity:.8}
+.cloud.one{top:20px;left:15px}
+.cloud.two{top:85px;right:17px;font-size:30px}
+.sun{position:absolute;right:35px;top:28px;font-size:45px}
+.hill{
+  position:absolute;background:#b5d6a9;border-radius:50%;
+  width:280px;height:190px;opacity:.75;
+}
+.hill.h1{top:210px;left:-130px}
+.hill.h2{top:430px;right:-150px;background:#c4dcae}
+.hill.h3{top:740px;left:-140px;background:#b2d2a6}
+.hill.h4{top:930px;right:-120px}
+.tree{position:absolute;font-size:33px;z-index:1}
+.tree.t1{top:170px;right:18px}
+.tree.t2{top:365px;left:12px}
+.tree.t3{top:570px;right:12px}
+.tree.t4{top:800px;left:12px}
+.tree.t5{top:990px;right:15px}
+.map-caption{
+  position:relative;z-index:2;text-align:center;padding:19px 10px 5px;
+}
+.map-caption h2{font-size:20px;margin:0;font-weight:900}
+.map-caption p{font-size:11px;color:#66806c;margin:4px 0}
+.path-svg{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.map-node{
+  position:absolute;z-index:3;width:145px;text-align:center;
+  transform:translateX(-50%);
+}
+.map-node .bubble{
+  width:82px;height:82px;border-radius:28px;margin:auto;
+  border:5px solid white;display:grid;place-items:center;
+  font-size:35px;box-shadow:0 6px 0 #526d4c35,0 8px 15px #526d4c20;
+  position:relative;
+}
+.map-node .bubble:after{
+  content:"";position:absolute;width:13px;height:13px;
+  background:inherit;bottom:-10px;left:30px;transform:rotate(45deg);
+  border-radius:2px;z-index:-1;
+}
+.map-node strong{display:block;margin-top:13px;font-size:13px;font-weight:900}
+.map-node small{font-size:10px;color:#687e68;display:block;margin-top:3px}
+.map-node .status{
+  display:inline-block;background:white;border-radius:20px;
+  padding:4px 9px;font-size:9px;font-weight:900;margin-top:7px;
+  color:var(--green-dark);box-shadow:0 2px 5px #526d4c15;
+}
+.node1{top:145px;left:27%}
+.node2{top:340px;left:73%}
+.node3{top:545px;left:27%}
+.node4{top:750px;left:73%}
+.node5{top:955px;left:28%}
+.node1 .bubble{background:#f6d47f}
+.node2 .bubble{background:#b8dce9}
+.node3 .bubble{background:#f2b9a4}
+.node4 .bubble{background:#d3c5ed}
+.node5 .bubble{background:#a9d5a9}
+.map-footer{
+  position:relative;z-index:3;margin:0 15px 18px;padding:13px;
+  border-radius:15px;background:#ffffffdb;text-align:center;
+  font-size:11px;color:#6b806c;
+}
+
+/* FEATURE PAGES */
+.feature-top{display:flex;align-items:center;gap:12px;padding:17px 18px 5px}
+.feature-top h1{font-size:20px;margin:0;font-weight:900}
+.feature-top p{font-size:11px;color:var(--muted);margin:3px 0 0}
+.content{padding:15px 18px}
+.task-card{
+  background:white;border:1px solid #e8eee5;border-radius:17px;
+  padding:15px;margin-bottom:11px;
+}
+.task-card h3{font-size:14px;margin:0 0 5px}
+.task-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.task-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.task-icon{
+  width:42px;height:42px;border-radius:13px;background:#edf4e9;
+  display:grid;place-items:center;font-size:22px;flex-shrink:0;
+}
+.field{margin:14px 0}
+.field label{display:block;font-size:12px;font-weight:900;margin-bottom:7px}
+.field input,.field textarea,.field select{
+  width:100%;border:1px solid #e0e8df;background:#fff;
+  border-radius:12px;padding:12px;color:var(--ink);font-size:12px;
+}
+.field textarea{min-height:85px;resize:vertical}
+.upload{
+  border:1.5px dashed #b7cdb7;background:#f7faf4;
+  padding:17px;border-radius:14px;text-align:center;font-size:12px;
+  color:#718574;
+}
+.upload input{font-size:11px;margin-top:9px;max-width:100%}
+.feedback{
+  background:white;border:1px solid #e7ede4;border-radius:17px;
+  padding:15px;margin-bottom:13px;
+}
+.feedback-head{display:flex;justify-content:space-between;align-items:center}
+.teacher{display:flex;align-items:center;gap:9px}
+.teacher-avatar{
+  width:34px;height:34px;border-radius:50%;background:#f5dfc9;
+  display:grid;place-items:center;font-size:19px;
+}
+.teacher strong{font-size:12px;display:block}
+.teacher small{font-size:10px;color:var(--muted)}
+.quote{
+  background:#f6f5ec;border-left:3px solid var(--orange);
+  padding:10px 12px;border-radius:0 10px 10px 0;
+  font-size:11px;line-height:1.6;margin:12px 0;
+}
+.comment{font-size:12px;line-height:1.6;margin:8px 0}
+.reply-box{display:flex;gap:7px;margin-top:12px}
+.reply-box input{
+  min-width:0;flex:1;border:1px solid #e1e9df;border-radius:10px;
+  padding:10px;font-size:11px;
+}
+.reply-box button{border:0;background:var(--green);color:white;border-radius:10px;padding:0 13px}
+.reply{background:#eaf3e9;border-radius:12px;padding:10px;margin-top:9px;font-size:11px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.compare-box{border-radius:15px;padding:13px;background:#f7eee7}
+.compare-box.after{background:#e9f3e8}
+.compare-box small{font-size:10px;color:#7b877d}
+.compare-box strong{display:block;font-size:26px;margin:5px 0}
+.reflection-q{font-size:12px;font-weight:800;margin-bottom:7px}
+.reflection-item{margin-bottom:15px}
+.reflection-item textarea{
+  width:100%;min-height:65px;border:1px solid #e0e8df;
+  border-radius:12px;padding:11px;font-size:11px;
+}
+
+/* PROGRESS */
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{padding:14px;background:white;border:1px solid #e9eee6;border-radius:16px}
+.metric .num{font-size:25px;font-weight:900;color:var(--green-dark)}
+.metric small{display:block;font-size:10px;color:var(--muted)}
+.chart-card{background:white;border:1px solid #e9eee6;border-radius:18px;padding:15px;margin-bottom:13px}
+.chart-card h3{font-size:14px;margin:0 0 4px}
+.chart-card p{font-size:10px;color:var(--muted);margin:0 0 12px}
+.chart{width:100%;height:auto;display:block}
+.legend{display:flex;gap:13px;flex-wrap:wrap;font-size:10px;color:#718071;margin-top:8px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+.badges{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.badge-card{
+  text-align:center;background:white;border:1px solid #e9eee6;
+  border-radius:15px;padding:14px 8px;
+}
+.badge-card .medal{font-size:31px}
+.badge-card strong{font-size:11px;display:block;margin:5px 0 2px}
+.badge-card small{font-size:9px;color:var(--muted)}
+.locked{filter:grayscale(1);opacity:.45}
+.nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;background:#fff;
+  border-top:1px solid #edf0e9;display:flex;justify-content:space-around;
+  padding:10px 5px 13px;z-index:20;
+}
+.nav button{
+  border:0;background:none;color:#8b988d;font-size:9px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.nav button span{font-size:19px}
+.nav button.selected{color:var(--green-dark);font-weight:900}
+.toast{
+  position:fixed;bottom:85px;left:50%;transform:translateX(-50%);
+  background:#35483b;color:white;padding:10px 16px;border-radius:20px;
+  font-size:11px;z-index:40;display:none;white-space:nowrap;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- 1. PILIH MATA PELAJARAN -->
+<section id="subjects" class="screen active">
+  <div class="topbar">
+    <div class="logo">JOURA<small>JOURNEY OF REFLECTION AND ACHIEVEMENT</small></div>
+    <div class="avatar">👩🏻‍🎓</div>
+  </div>
+  <div class="welcome-art">
+    <h2>Setiap proses adalah bagian dari perjalananmu!</h2>
+    <p>Jelajahi proses belajar, pahami umpan balik, dan rayakan setiap perkembangan.</p>
+    <div class="welcome-emoji">🌻📚</div>
+  </div>
+  <div class="heading">
+    <h1>Mata Pelajaran</h1>
+    <p>Pilih mata pelajaran yang ingin kamu jelajahi hari ini.</p>
+  </div>
+  <div class="subject-grid">
+    <button class="subject" onclick="chooseSubject('Bahasa Inggris','📘')">
+      <span class="emoji">📘</span><strong>Bahasa Inggris</strong><small>5 level perjalanan</small>
+    </button>
+    <button class="subject" onclick="chooseSubject('Matematika','📐')">
+      <span class="emoji">📐</span><strong>Matematika</strong><small>5 level perjalanan</small>
+    </button>
+    <button class="subject" onclick="chooseSubject('Sejarah','🏛️')">
+      <span class="emoji">📜</span><strong>Sejarah</strong><small>5 level perjalanan</small>
+    </button>
+    <button class="subject" onclick="chooseSubject('Pendidikan Kewarganegaraan','🌏')">
+      <span class="emoji">🌏</span><strong>PPKn</strong><small>5 level perjalanan</small>
+    </button>
+    <button class="subject wide" onclick="chooseSubject('Biologi','🌱')">
+      <span class="emoji">🌱</span><strong>Biologi</strong><small>5 level perjalanan</small>
+    </button>
+  </div>
+  <p class="bottom-note">Pilih mata pelajaran untuk memulai perjalanan belajarmu.</p>
+</section>
+
+<!-- 2. LEARNING JOURNEY MAP -->
+<section id="map" class="screen">
+  <div class="topbar">
+    <div class="logo">JOURA<small>LEARNING ADVENTURE</small></div>
+    <div class="avatar">👩🏻‍🎓</div>
+  </div>
+  <div class="heading">
+    <h1>Halo, Siswa! 👋</h1>
+    <p>Siap melanjutkan perjalanan belajarmu?</p>
+  </div>
+  <div class="map-head">
+    <div style="flex:1">
+      <strong id="selectedSubject">📘 Bahasa Inggris</strong>
+      <small>Learning Journey Map</small>
+      <div class="progress-track"><div class="progress-fill" id="mapProgress"></div></div>
+      <small id="progressText">2 dari 5 level telah diselesaikan</small>
+    </div>
+    <button class="secondary" onclick="showScreen('subjects')" style="font-size:10px">Ganti</button>
+  </div>
+
+  <div class="map-world">
+    <div class="cloud one">☁️</div><div class="cloud two">☁️</div>
+    <div class="sun">☀️</div>
+    <div class="hill h1"></div><div class="hill h2"></div>
+    <div class="hill h3"></div><div class="hill h4"></div>
+    <div class="tree t1">🌳</div><div class="tree t2">🌲</div>
+    <div class="tree t3">🌳</div><div class="tree t4">🌲</div>
+    <div class="tree t5">🌳</div>
+
+    <div class="map-caption">
+      <h2>Perjalanan Belajarku</h2>
+      <p>Ikuti jalurnya dan selesaikan setiap tahapan!</p>
+    </div>
+
+    <svg class="path-svg" viewBox="0 0 400 1110" preserveAspectRatio="none">
+      <path d="M108 225 C130 270 290 270 290 390 S100 470 108 590 S290 670 290 795 S105 865 110 1000"
+        fill="none" stroke="#fff9e9" stroke-width="23" stroke-linecap="round"/>
+      <path d="M108 225 C130 270 290 270 290 390 S100 470 108 590 S290 670 290 795 S105 865 110 1000"
+        fill="none" stroke="#c49d67" stroke-width="4" stroke-dasharray="3 12" stroke-linecap="round"/>
+    </svg>
+
+    <button class="map-node node1" onclick="showScreen('submit')">
+      <div class="bubble">📤</div>
+      <strong>LEVEL 1</strong><strong>SUBMIT</strong>
+      <small>Kumpulkan tugasmu</small><span class="status">MULAI DI SINI</span>
+    </button>
+
+    <button class="map-node node2" onclick="showScreen('feedback')">
+      <div class="bubble">💬</div>
+      <strong>LEVEL 2</strong><strong>FEEDBACK</strong>
+      <small>Pahami masukan guru</small><span class="status">JELAJAHI</span>
+    </button>
+
+    <button class="map-node node3" onclick="showScreen('revision')">
+      <div class="bubble">✏️</div>
+      <strong>LEVEL 3</strong><strong>REVISION</strong>
+      <small>Perbaiki hasil tugas</small><span class="status">JELAJAHI</span>
+    </button>
+
+    <button class="map-node node4" onclick="showScreen('reflection')">
+      <div class="bubble">📖</div>
+      <strong>LEVEL 4</strong><strong>REFLECTION</strong>
+      <small>Kenali proses belajarmu</small><span class="status">JELAJAHI</span>
+    </button>
+
+    <button class="map-node node5" onclick="showScreen('progress')">
+      <div class="bubble">🏆</div>
+      <strong>LEVEL 5</strong><strong>MY LEARNING PROGRESS</strong>
+      <small>Lihat perkembanganmu</small><span class="status">PENCAPAIAN</span>
+    </button>
+  </div>
+  <div class="map-footer">🌼 Terus melangkah! Setiap usaha adalah bagian dari perkembanganmu.</div>
+</section>
+
+<!-- 3. SUBMIT -->
+<section id="submit" class="screen">
+  <div class="feature-top">
+    <button class="back" onclick="showScreen('map')">‹</button>
+    <div><h1>SUBMIT</h1><p>Level 1 · Pengumpulan Tugas</p></div>
+  </div>
+  <div class="content">
+    <div class="card" style="background:#edf5e9;margin-bottom:15px">
+      <div style="font-size:25px">📚</div>
+      <strong style="font-size:14px">Simpan setiap hasil pekerjaanmu.</strong>
+      <p class="muted">Tugas yang dikumpulkan akan tersimpan berdasarkan urutan pengunggahan.</p>
+    </div>
+    <h3 class="section-title">Unggah Tugas</h3>
+    <div class="field"><label>Nama Tugas</label><input id="taskName" placeholder="Contoh: Descriptive Text"></div>
+    <div class="field"><label>Deskripsi Tugas</label><textarea id="taskDesc" placeholder="Tuliskan keterangan singkat tugas..."></textarea></div>
+    <div class="field"><label>Unggah Berkas</label>
+      <div class="upload">📎 Pilih berkas tugas<br><input id="taskFile" type="file"></div>
+      <small class="muted">Mendukung dokumen, gambar, video, dan audio.</small>
+    </div>
+    <button class="primary" style="width:100%" onclick="addTask()">Kirim Tugas</button>
+    <h3 class="section-title" style="margin-top:25px">Daftar Tugas</h3>
+    <div id="taskList">
+      <div class="task-card">
+        <div class="task-row"><div class="task-icon">📄</div><div style="flex:1"><h3>Tugas 1 — Descriptive Text</h3><p>Bahasa Inggris · 12 Oktober 2026</p></div><span class="tag">Terkirim</span></div>
+      </div>
+      <div class="task-card">
+        <div class="task-row"><div class="task-icon">🎥</div><div style="flex:1"><h3>Tugas 2 — Video Speech</h3><p>Bahasa Inggris · 19 Oktober 2026</p></div><span class="tag">Terkirim</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. FEEDBACK -->
+<section id="feedback" class="screen">
+  <div class="feature-top">
+    <button class="back" onclick="showScreen('map')">‹</button>
+    <div><h1>FEEDBACK</h1><p>Level 2 · Umpan Balik Guru</p></div>
+  </div>
+  <div class="content">
+    <div class="card" style="background:#edf4f8;margin-bottom:15px">
+      <div style="font-size:25px">💬</div>
+      <strong style="font-size:14px">Mari pahami setiap masukan.</strong>
+      <p class="muted">Pilih komentar untuk melihat bagian tugas yang dimaksud dan berdiskusi dengan guru.</p>
+    </div>
+    <div class="feedback">
+      <div class="feedback-head">
+        <div class="teacher"><div class="teacher-avatar">👨🏻‍🏫</div><div><strong>Bapak Adi — Guru</strong><small>Umpan balik tugas 1</small></div></div>
+        <span class="tag">Koreksi</span>
+      </div>
+      <h3 style="font-size:13px;margin:13px 0 5px">Tugas 1 — Descriptive Text</h3>
+      <div class="quote"><strong>Bagian yang dikomentari: Paragraf 1</strong><br>“My school have a beautiful garden and many tree.”</div>
+      <p class="comment"><strong>Komentar guru:</strong> Perhatikan kesesuaian subjek dan kata kerja. Karena subjeknya tunggal, gunakan <i>has</i>, bukan <i>have</i>. Kata benda <i>tree</i> juga perlu dibuat jamak menjadi <i>trees</i> karena jumlahnya lebih dari satu.</p>
+      <button class="secondary" onclick="showToast('Menampilkan bagian paragraf 1 pada Tugas 1')">Lihat bagian tugas</button>
+      <div class="reply-box"><input id="reply1" placeholder="Tulis tanggapan atau pertanyaan..."><button onclick="sendReply('reply1','replyResult1')">Kirim</button></div>
+      <div id="replyResult1"></div>
+    </div>
+    <div class="feedback">
+      <div class="feedback-head">
+        <div class="teacher"><div class="teacher-avatar">👨🏻‍🏫</div><div><strong>Bapak Adi — Guru</strong><small>Umpan balik tugas 2</small></div></div>
+        <span class="tag" style="background:#fff0df;color:#a66c38">Saran</span>
+      </div>
+      <h3 style="font-size:13px;margin:13px 0 5px">Tugas 2 — Video Speech</h3>
+      <div class="quote"><strong>Bagian yang dikomentari: Penyampaian isi</strong><br>“English is important for students because...”</div>
+      <p class="comment"><strong>Komentar guru:</strong> Gagasan yang kamu sampaikan sudah relevan. Akan lebih baik jika kamu menambahkan contoh konkret agar pendapatmu lebih meyakinkan. Perhatikan juga intonasi saat menyampaikan bagian penutup.</p>
+      <button class="secondary" onclick="showToast('Menampilkan bagian penyampaian isi pada Tugas 2')">Lihat bagian tugas</button>
+      <div class="reply-box"><input id="reply2" placeholder="Tulis tanggapan atau pertanyaan..."><button onclick="sendReply('reply2','replyResult2')">Kirim</button></div>
+      <div id="replyResult2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. REVISION -->
+<section id="revision" class="screen">
+  <div class="feature-top">
+    <button class="back" onclick="showScreen('map')">‹</button>
+    <div><h1>REVISION</h1><p>Level 3 · Perbaikan Tugas</p></div>
+  </div>
+  <div class="content">
+    <div class="card" style="background:#fbefe7;margin-bottom:15px">
+      <div style="font-size:25px">✏️</div>
+      <strong style="font-size:14px">Saatnya memperbaiki hasil pekerjaanmu!</strong>
+      <p class="muted">Unggah hasil perbaikan berdasarkan umpan balik yang telah diterima.</p>
+    </div>
+    <div class="field"><label>Pilih Tugas yang Direvisi</label>
+      <select id="revisionTask"><option>Tugas 1 — Descriptive Text</option><option>Tugas 2 — Video Speech</option></select>
+    </div>
+    <div class="field"><label>Unggah Hasil Revisi</label>
+      <div class="upload">📎 Pilih berkas hasil revisi<br><input id="revisionFile" type="file"></div>
+    </div>
+    <div class="field"><label>Catatan Perbaikan</label><textarea id="revisionNote" placeholder="Jelaskan bagian yang telah kamu perbaiki..."></textarea></div>
+    <button class="primary" style="width:100%" onclick="addRevision()">Unggah Hasil Revisi</button>
+
+    <h3 class="section-title" style="margin-top:25px">Riwayat Revisi</h3>
+    <div id="revisionList">
+      <div class="task-card">
+        <div class="task-row"><div class="task-icon">📝</div><div style="flex:1"><h3>Tugas 1 — Descriptive Text</h3><p>Revisi pertama · 20 Oktober 2026</p></div><span class="tag">Direvisi</span></div>
+        <p style="font-size:11px;margin-top:10px">Perbaikan penggunaan kata kerja dan bentuk jamak sesuai masukan guru.</p>
+        <button class="secondary" style="margin-top:10px" onclick="showOriginal()">View Original Submission</button>
+      </div>
+    </div>
+    <div id="originalPanel" class="card" style="display:none;margin-top:12px">
+      <h3 style="font-size:13px">Perbandingan Hasil Tugas</h3>
+      <div class="compare" style="margin-top:12px">
+        <div class="compare-box"><small>Hasil awal</small><p style="font-size:11px">My school have a beautiful garden and many tree.</p></div>
+        <div class="compare-box after"><small>Hasil revisi</small><p style="font-size:11px">My school has a beautiful garden and many trees.</p></div>
+      </div>
+      <p class="muted">Perhatikan perubahan yang dilakukan setelah menerima umpan balik guru.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. REFLECTION -->
+<section id="reflection" class="screen">
+  <div class="feature-top">
+    <button class="back" onclick="showScreen('map')">‹</button>
+    <div><h1>REFLECTION</h1><p>Level 4 · Refleksi Pembelajaran</p></div>
+  </div>
+  <div class="content">
+    <div class="card" style="background:#f0ebf8;margin-bottom:15px">
+      <div style="font-size:25px">📖</div>
+      <strong style="font-size:14px">Luangkan waktu untuk memahami proses belajarmu.</strong>
+      <p class="muted">Jawablah pertanyaan berikut berdasarkan pengalamanmu mengerjakan tugas.</p>
+    </div>
+    <div class="card">
+      <div class="reflection-item">
+        <div class="reflection-q">1. Apa yang kamu pelajari dari tugas ini?</div>
+        <textarea id="r1" placeholder="Tuliskan hal yang kamu pelajari..."></textarea>
+      </div>
+      <div class="reflection-item">
+        <div class="reflection-q">2. Kesulitan apa yang kamu hadapi saat menyelesaikan tugas ini?</div>
+        <textarea id="r2" placeholder="Ceritakan kesulitanmu..."></textarea>
+      </div>
+      <div class="reflection-item">
+        <div class="reflection-q">3. Bagian apa dari hasil pekerjaanmu yang masih perlu diperbaiki?</div>
+        <textarea id="r3" placeholder="Tuliskan bagian yang perlu ditingkatkan..."></textarea>
+      </div>
+      <div class="reflection-item">
+        <div class="reflection-q">4. Bagaimana umpan balik guru membantumu memperbaiki hasil pekerjaanmu?</div>
+        <textarea id="r4" placeholder="Jelaskan manfaat umpan balik..."></textarea>
+      </div>
+      <div class="reflection-item">
+        <div class="reflection-q">5. Apa yang akan kamu lakukan secara berbeda pada tugas berikutnya?</div>
+        <textarea id="r5" placeholder="Tuliskan rencana perbaikanmu..."></textarea>
+      </div>
+      <button class="primary" style="width:100%" onclick="saveReflection()">Simpan Refleksi</button>
+    </div>
+    <p class="muted" style="text-align:center;margin-top:12px">Refleksi yang telah disimpan menjadi bagian dari dokumentasi perjalanan belajarmu.</p>
+  </div>
+</section>
+
+<!-- 7. MY LEARNING PROGRESS -->
+<section id="progress" class="screen">
+  <div class="feature-top">
+    <button class="back" onclick="showScreen('map')">‹</button>
+    <div><h1>MY LEARNING PROGRESS</h1><p>Level 5 · Perkembangan dan Pencapaian</p></div>
+  </div>
+  <div class="content">
+    <div class="card" style="background:#edf5e9;margin-bottom:14px">
+      <strong style="font-size:14px">Lihat sejauh mana kamu telah berkembang! 🌱</strong>
+      <p class="muted">Setiap tugas, umpan balik, revisi, dan refleksi merupakan bagian dari perjalanan belajarmu.</p>
+    </div>
+
+    <div class="metric-grid" style="margin-bottom:15px">
+      <div class="metric"><div class="num" id="metricTasks">2</div><small>Tugas dikumpulkan</small></div>
+      <div class="metric"><div class="num">2</div><small>Umpan balik diterima</small></div>
+      <div class="metric"><div class="num" id="metricRevision">1</div><small>Revisi diselesaikan</small></div>
+      <div class="metric"><div class="num" id="metricReflection">0</div><small>Refleksi diselesaikan</small></div>
+    </div>
+
+    <!-- LEARNING GROWTH CHART -->
+    <div class="chart-card">
+      <h3>📈 Learning Growth Chart</h3>
+      <p>Perubahan nilai dari satu tugas ke tugas berikutnya.</p>
+      <svg class="chart" viewBox="0 0 340 205">
+        <g stroke="#edf0e9" stroke-width="1">
+          <line x1="38" y1="20" x2="325" y2="20"/>
+          <line x1="38" y1="58" x2="325" y2="58"/>
+          <line x1="38" y1="96" x2="325" y2="96"/>
+          <line x1="38" y1="134" x2="325" y2="134"/>
+          <line x1="38" y1="172" x2="325" y2="172"/>
+        </g>
+        <g fill="#879487" font-size="9" text-anchor="end">
+          <text x="30" y="23">100</text><text x="30" y="61">75</text>
+          <text x="30" y="99">50</text><text x="30" y="137">25</text>
+          <text x="30" y="175">0</text>
+        </g>
+        <polyline points="55,78 135,67 215,51 295,35" fill="none" stroke="#6b9a76" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <g fill="#6b9a76" stroke="white" stroke-width="3">
+          <circle cx="55" cy="78" r="5"/><circle cx="135" cy="67" r="5"/>
+          <circle cx="215" cy="51" r="5"/><circle cx="295" cy="35" r="5"/>
+        </g>
+        <g fill="#536c58" font-size="10" font-weight="bold" text-anchor="middle">
+          <text x="55" y="66">62</text><text x="135" y="55">70</text>
+          <text x="215" y="39">80</text><text x="295" y="23">90</text>
+        </g>
+        <g fill="#879487" font-size="9" text-anchor="middle">
+          <text x="55" y="192">Tugas 1</text><text x="135" y="192">Tugas 2</text>
+          <text x="215" y="192">Tugas 3</text><text x="295" y="192">Tugas 4</text>
+        </g>
+      </svg>
+      <div class="legend"><span><i class="dot" style="background:#6b9a76"></i>Nilai tugas</span><span>Contoh data perkembangan</span></div>
+    </div>
+
+    <!-- REVISION IMPROVEMENT -->
+    <div class="chart-card">
+      <h3>🔄 Revision Improvement</h3>
+      <p>Perbandingan nilai sebelum dan sesudah revisi pada tugas yang sama.</p>
+      <div style="display:flex;justify-content:space-around;align-items:end;height:145px;padding:10px 15px 0">
+        <div style="text-align:center;width:38%">
+          <div style="font-size:12px;font-weight:900;margin-bottom:5px">65</div>
+          <div style="height:78px;background:#efbd9f;border-radius:10px 10px 3px 3px"></div>
+          <small class="muted">Sebelum revisi</small>
+        </div>
+        <div style="text-align:center;width:38%">
+          <div style="font-size:12px;font-weight:900;margin-bottom:5px;color:#426b50">85</div>
+          <div style="height:102px;background:#83b58a;border-radius:10px 10px 3px 3px"></div>
+          <small class="muted">Sesudah revisi</small>
+        </div>
+      </div>
+      <div style="background:#eaf3e8;border-radius:12px;padding:11px;margin-top:13px;text-align:center">
+        <strong style="font-size:17px;color:#426b50">+20 poin</strong>
+        <div class="muted">Peningkatan nilai setelah revisi</div>
+      </div>
+      <p class="muted" style="margin-top:10px">Contoh data: Tugas 1 — Descriptive Text. Nilai merupakan ilustrasi untuk menunjukkan perbandingan hasil penilaian.</p>
+    </div>
+
+    <!-- ACHIEVEMENT -->
+    <div class="chart-card">
+      <h3>🏅 Learning Achievement</h3>
+      <p>Lencana apresiasi berdasarkan aktivitas dan pencapaian belajar.</p>
+      <div class="badges">
+        <div class="badge-card"><div class="medal">🌱</div><strong>First Step</strong><small>Mengumpulkan tugas pertama</small></div>
+        <div class="badge-card"><div class="medal">💬</div><strong>Feedback Seeker</strong><small>Menanggapi umpan balik</small></div>
+        <div class="badge-card"><div class="medal">✏️</div><strong>Revision Rookie</strong><small>Menyelesaikan revisi pertama</small></div>
+        <div class="badge-card locked"><div class="medal">📖</div><strong>Reflection Master</strong><small>Menyelesaikan 5 refleksi</small></div>
+      </div>
+    </div>
+    <button class="secondary" style="width:100%" onclick="showScreen('map')">Kembali ke Learning Journey Map</button>
+  </div>
+</section>
+
+<nav class="nav">
+  <button class="selected" onclick="showScreen('subjects')"><span>🏠</span>Beranda</button>
+  <button onclick="showScreen('map')"><span>🗺️</span>Perjalanan</button>
+  <button onclick="showScreen('progress')"><span>👤</span>Perkembangan</button>
+</nav>
+<div id="toast" class="toast"></div>
+</div>
+
+<script>
+let currentSubject = 'Bahasa Inggris';
+let taskCount = 2;
+let revisionCount = 1;
+let reflectionCount = 0;
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('selected'));
+  if(id==='subjects') document.querySelectorAll('.nav button')[0].classList.add('selected');
+  if(id==='map') document.querySelectorAll('.nav button')[1].classList.add('selected');
+  if(id==='progress') document.querySelectorAll('.nav button')[2].classList.add('selected');
+}
+function chooseSubject(name,icon){
+  currentSubject=name;
+  document.getElementById('selectedSubject').textContent=icon+' '+name;
+  showScreen('map');
+}
+function showToast(message){
+  const el=document.getElementById('toast');
+  el.textContent=message;el.style.display='block';
+  setTimeout(()=>el.style.display='none',2400);
+}
+function escapeHTML(str){
+  return String(str).replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+function addTask(){
+  const name=document.getElementById('taskName').value.trim();
+  const desc=document.getElementById('taskDesc').value.trim();
+  const file=document.getElementById('taskFile').files[0];
+  if(!name){showToast('Masukkan nama tugas terlebih dahulu.');return;}
+  taskCount++;
+  const item=document.createElement('div');
+  item.className='task-card';
+  item.innerHTML=`<div class="task-row"><div class="task-icon">📄</div><div style="flex:1"><h3>Tugas ${taskCount} — ${escapeHTML(name)}</h3><p>${escapeHTML(currentSubject)} · Baru saja</p></div><span class="tag">Terkirim</span></div><p style="margin-top:8px">${escapeHTML(desc)}</p><p style="margin-top:5px">📎 ${file?escapeHTML(file.name):'Tidak ada berkas'}</p>`;
+  document.getElementById('taskList').prepend(item);
+  document.getElementById('taskName').value='';
+  document.getElementById('taskDesc').value='';
+  document.getElementById('taskFile').value='';
+  document.getElementById('metricTasks').textContent=taskCount;
+  showToast('Tugas berhasil ditambahkan!');
+}
+function sendReply(inputId,resultId){
+  const input=document.getElementById(inputId);
+  const value=input.value.trim();
+  if(!value){showToast('Tulis tanggapan terlebih dahulu.');return;}
+  const result=document.getElementById(resultId);
+  result.innerHTML=`<div class="reply"><strong>Tanggapanmu:</strong><br>${escapeHTML(value)}</div>`;
+  input.value='';
+  showToast('Tanggapan berhasil ditambahkan.');
+}
+function addRevision(){
+  const file=document.getElementById('revisionFile').files[0];
+  const task=document.getElementById('revisionTask').value;
+  const note=document.getElementById('revisionNote').value.trim();
+  if(!file){showToast('Pilih berkas hasil revisi terlebih dahulu.');return;}
+  revisionCount++;
+  const item=document.createElement('div');
+  item.className='task-card';
+  item.innerHTML=`<div class="task-row"><div class="task-icon">📝</div><div style="flex:1"><h3>${escapeHTML(task)}</h3><p>Revisi ke-${revisionCount} · Baru saja</p></div><span class="tag">Direvisi</span></div><p style="font-size:11px;margin-top:9px">${escapeHTML(note)}</p><p style="font-size:11px">📎 ${escapeHTML(file.name)}</p>`;
+  document.getElementById('revisionList').prepend(item);
+  document.getElementById('revisionFile').value='';
+  document.getElementById('revisionNote').value='';
+  document.getElementById('metricRevision').textContent=revisionCount;
+  showToast('Hasil revisi berhasil ditambahkan!');
+}
+function showOriginal(){
+  const panel=document.getElementById('originalPanel');
+  panel.style.display=panel.style.display==='none'?'block':'none';
+}
+function saveReflection(){
+  const answers=[1,2,3,4,5].map(i=>document.getElementById('r'+i).value.trim());
+  if(answers.every(a=>!a)){showToast('Isi setidaknya satu pertanyaan refleksi.');return;}
+  reflectionCount++;
+  document.getElementById('metricReflection').textContent=reflectionCount;
+  showToast('Refleksi berhasil disimpan!');
+}
+</script>
+</body>
+</html>
